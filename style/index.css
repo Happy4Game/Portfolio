@@ -1,0 +1,18 @@
+* {
+  --main-color: rgba(246, 246, 246, 1);
+  --second-main-color: rgba(217, 217, 217, 1);
+  --third-main-color: rgba(68, 68, 68, 1);
+}
+a {
+  text-decoration: none;
+}
+#id-photo {
+  border-radius: 35px;
+}
+
+article {
+  margin-top: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

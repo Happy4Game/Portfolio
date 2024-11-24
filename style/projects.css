@@ -1,0 +1,15 @@
+.line {
+  margin-top: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  align-content: center;
+  align-items: center;
+  justify-content: space-around;
+}
+article {
+  width: 70%;
+  margin: auto;
+}
+.block-text {
+  width: 300px;
+}
