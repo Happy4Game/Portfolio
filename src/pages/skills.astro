@@ -1,0 +1,135 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const skills = [
+  {
+    icon: "💻",
+    title: "Développer des applications",
+    text: "Je développe et maintiens des applications et des sites web. J'ai déjà réalisé des plugins Minecraft et plusieurs logiciels.",
+    tags: ["Python", "C / C++ / C#", "Java", "HTML / CSS / JS", "TypeScript", "Vue"],
+  },
+  {
+    icon: "🧠",
+    title: "Construire des algorithmes",
+    text: "Je crée des algorithmes à partir d'un problème énoncé par un expert métier, je développe l'idée en pseudo-code puis je l'optimise pour économiser des performances.",
+  },
+  {
+    icon: "🐧",
+    title: "Installer et configurer des serveurs",
+    text: "Je maîtrise les bases de Linux (Debian, Ubuntu Server). J'ai transformé un PC et un Raspberry Pi en serveurs : NAS, serveurs de jeu, VPN. J'écris des Dockerfile et des fichiers compose.",
+    tags: ["Nextcloud", "Minecraft", "Terraria", "Ark", "Pi-hole", "OpenVPN", "Fail2Ban", "Docker"],
+  },
+  {
+    icon: "🗄️",
+    title: "Concevoir des bases de données",
+    text: "J'installe et configure MySQL ou PostgreSQL, je recueille les besoins du client et je propose un MCD / MLD respectant les principes MERISE.",
+    tags: ["MySQL", "PostgreSQL", "SQLite", "MERISE"],
+  },
+  {
+    icon: "🤝",
+    title: "Comprendre les besoins métiers",
+    text: "Je recueille les besoins des clients et des utilisateurs, et je reformule simplement des termes complexes liés à un métier, même inconnu.",
+  },
+  {
+    icon: "🧩",
+    title: "Travailler en équipe",
+    text: "Je répartis les tâches entre les acteurs d'un projet, je suis et mets en place un Kanban. Je connais la méthode Scrum, sans l'avoir encore pratiquée.",
+    tags: ["Kanban", "Scrum", "Git"],
+  },
+];
+---
+
+<BaseLayout title="Compétences">
+  <p class="eyebrow" data-reveal>Compétences</p>
+  <h1 class="section-title" data-reveal style="--delay:80ms">
+    Ce que je sais <span class="gradient-text">faire</span>
+  </h1>
+  <p class="lead" data-reveal style="--delay:160ms">
+    Du code à l'hébergement, en passant par la base de données et le travail
+    d'équipe.
+  </p>
+
+  <div class="grid">
+    {
+      skills.map((s, i) => (
+        <article class="skill glass" data-reveal style={`--delay:${(i % 3) * 90}ms`}>
+          <span class="icon" aria-hidden="true">{s.icon}</span>
+          <h2>{s.title}</h2>
+          <p>{s.text}</p>
+          {s.tags && (
+            <ul class="tags">
+              {s.tags.map((t) => <li class="chip">{t}</li>)}
+            </ul>
+          )}
+        </article>
+      ))
+    }
+  </div>
+</BaseLayout>
+
+<style>
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr));
+    gap: 16px;
+    margin-top: 48px;
+  }
+  .skill {
+    position: relative;
+    padding: 28px;
+    overflow: hidden;
+    transition:
+      transform 0.35s ease,
+      border-color 0.35s ease;
+  }
+  /* Halo coloré qui apparaît au survol */
+  .skill::before {
+    content: "";
+    position: absolute;
+    inset: auto -40% -60% auto;
+    width: 220px;
+    height: 220px;
+    border-radius: 50%;
+    background: var(--gradient);
+    filter: blur(60px);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .skill:hover {
+    transform: translateY(-6px);
+    border-color: rgb(255 77 141 / 0.45);
+  }
+  .skill:hover::before {
+    opacity: 0.35;
+  }
+  .icon {
+    display: grid;
+    place-items: center;
+    width: 52px;
+    height: 52px;
+    border-radius: 14px;
+    font-size: 1.6rem;
+    background: rgb(255 255 255 / 0.06);
+    border: 1px solid var(--border);
+    transition: transform 0.4s cubic-bezier(0.3, 1.6, 0.5, 1);
+  }
+  .skill:hover .icon {
+    transform: rotate(-10deg) scale(1.1);
+  }
+  h2 {
+    font-size: 1.25rem;
+    margin: 18px 0 10px;
+  }
+  p {
+    color: var(--muted);
+    position: relative;
+  }
+  .tags {
+    position: relative;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    list-style: none;
+    margin-top: 18px;
+  }
+</style>

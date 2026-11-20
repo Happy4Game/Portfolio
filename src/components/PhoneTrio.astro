@@ -1,0 +1,93 @@
+---
+// Trois captures de Trainerr en éventail, qui flottent doucement.
+import { Image } from "astro:assets";
+import a from "../assets/app/trainerr/aujourdhui.png";
+import b from "../assets/app/trainerr/serie.png";
+import c from "../assets/app/trainerr/stats.png";
+
+interface Props {
+  size?: number;
+}
+const { size = 200 } = Astro.props;
+const shots = [
+  { src: b, alt: "Trainerr : une série en cours, charge et répétitions pré-remplies" },
+  { src: a, alt: "Trainerr : l'écran Aujourd'hui avec la séance du jour" },
+  { src: c, alt: "Trainerr : les statistiques de progression" },
+];
+---
+
+<div class="trio" style={`--w:${size}px`}>
+  {
+    shots.map((s, i) => (
+      <div class={`phone p${i}`}>
+        <Image src={s.src} alt={s.alt} width={size * 2} />
+      </div>
+    ))
+  }
+</div>
+
+<style>
+  .trio {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: calc(var(--w) * 2.3);
+    max-width: 100%;
+  }
+  .phone {
+    position: absolute;
+    width: var(--w);
+    max-width: 38%;
+    border-radius: 26px;
+    padding: 6px;
+    background: #1a1a22;
+    border: 1px solid rgb(255 255 255 / 0.12);
+    box-shadow:
+      0 30px 60px rgb(0 0 0 / 0.55),
+      0 0 0 1px rgb(0 0 0 / 0.5);
+    transition: transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+  .phone :global(img) {
+    border-radius: 20px;
+    width: 100%;
+  }
+  .p0 {
+    --r: -10deg;
+    --x: -62%;
+    animation: float 7s ease-in-out infinite;
+    animation-delay: -2s;
+  }
+  .p1 {
+    --r: 0deg;
+    --x: 0%;
+    z-index: 2;
+    animation: float 6s ease-in-out infinite;
+  }
+  .p2 {
+    --r: 10deg;
+    --x: 62%;
+    animation: float 8s ease-in-out infinite;
+    animation-delay: -4s;
+  }
+  .phone {
+    transform: translateX(var(--x)) rotate(var(--r));
+  }
+  .trio:hover .p0 {
+    --x: -80%;
+    --r: -14deg;
+  }
+  .trio:hover .p2 {
+    --x: 80%;
+    --r: 14deg;
+  }
+  @keyframes float {
+    0%,
+    100% {
+      translate: 0 0;
+    }
+    50% {
+      translate: 0 -14px;
+    }
+  }
+</style>

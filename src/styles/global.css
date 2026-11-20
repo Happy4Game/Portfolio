@@ -1,0 +1,210 @@
+/* Styles communs à toutes les pages (importés dans BaseLayout.astro) */
+@import "@fontsource-variable/inter";
+@import "@fontsource-variable/space-grotesk";
+
+:root {
+  --bg: #0a0a0f;
+  --bg-soft: #12121a;
+  --surface: rgb(255 255 255 / 0.04);
+  --surface-hover: rgb(255 255 255 / 0.07);
+  --border: rgb(255 255 255 / 0.09);
+  --text: #f1f1f4;
+  --muted: #a2a2b0;
+  --orange: #ff7a3d;
+  --pink: #ff4d8d;
+  --violet: #8b6cff;
+  --gradient: linear-gradient(120deg, var(--orange), var(--pink) 50%, var(--violet));
+  --radius: 20px;
+  --font-display: "Space Grotesk Variable", system-ui, sans-serif;
+  --font-body: "Inter Variable", system-ui, sans-serif;
+  color-scheme: dark;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  overflow-x: clip;
+}
+
+body {
+  min-height: 100vh;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-display);
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+
+a {
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+::selection {
+  background: var(--pink);
+  color: #fff;
+}
+
+main {
+  position: relative;
+  width: min(1100px, 100% - 32px);
+  margin: 0 auto;
+  padding: 56px 0 96px;
+}
+
+/* ---------- Éléments réutilisables ---------- */
+
+.gradient-text {
+  background: var(--gradient);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shine 6s linear infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--orange);
+}
+
+.eyebrow::before {
+  content: "";
+  width: 24px;
+  height: 2px;
+  background: var(--gradient);
+  border-radius: 2px;
+}
+
+.section-title {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  margin: 12px 0 16px;
+}
+
+.lead {
+  color: var(--muted);
+  font-size: 1.1rem;
+  max-width: 60ch;
+}
+
+.glass {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  backdrop-filter: blur(12px);
+}
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 22px;
+  border-radius: 999px;
+  font-weight: 600;
+  text-decoration: none;
+  transition:
+    transform 0.25s ease,
+    box-shadow 0.25s ease,
+    background 0.25s ease;
+}
+
+.btn:hover {
+  transform: translateY(-2px);
+}
+
+.btn-primary {
+  background: var(--gradient);
+  color: #fff;
+  box-shadow: 0 8px 30px rgb(255 77 141 / 0.35);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 12px 40px rgb(255 77 141 / 0.5);
+}
+
+.btn-ghost {
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+.btn-ghost:hover {
+  background: var(--surface-hover);
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  font-size: 0.8rem;
+  color: var(--text);
+}
+
+/* ---------- Animation d'apparition au défilement ----------
+   Les éléments avec [data-reveal] reçoivent la classe .is-visible quand ils
+   entrent dans l'écran (script dans BaseLayout.astro). */
+[data-reveal] {
+  opacity: 0;
+  transform: translateY(28px);
+  transition:
+    opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--delay, 0ms);
+}
+
+[data-reveal].is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* Respecte le réglage « réduire les animations » du système :
+   https://developer.mozilla.org/fr/docs/Web/CSS/@media/prefers-reduced-motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  [data-reveal] {
+    opacity: 1;
+    transform: none;
+  }
+}

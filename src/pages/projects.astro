@@ -1,0 +1,131 @@
+---
+// Les projets viennent de la collection src/content/projects/*.md.
+// getCollection ne garantit pas l'ordre : on trie avec le champ `order`.
+// https://docs.astro.build/en/guides/content-collections/#querying-collections
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProjectCard from "../components/ProjectCard.astro";
+import PhoneTrio from "../components/PhoneTrio.astro";
+
+const projects = (await getCollection("projects")).sort((a, b) => a.data.order - b.data.order);
+const featured = projects.find((p) => p.data.featured)!;
+const others = projects.filter((p) => p !== featured);
+// render() transforme le corps Markdown en composant <Content />
+// https://docs.astro.build/en/guides/content-collections/#rendering-body-content
+const { Content } = await render(featured);
+---
+
+<BaseLayout title="Projets" description="Les projets de Thibaut Dufeutrel : Trainerr, Cubiverse, Jeu de la vie…">
+  <p class="eyebrow" data-reveal>Projets</p>
+  <h1 class="section-title" data-reveal style="--delay:80ms">
+    Ce que j'ai <span class="gradient-text">construit</span>
+  </h1>
+  <p class="lead" data-reveal style="--delay:160ms">
+    Des jeux, des applis de bureau et mobiles, et ce site. Le plus récent en
+    premier.
+  </p>
+
+  <section class="featured glass" id={featured.id}>
+    <div class="phones" data-reveal>
+      <PhoneTrio size={180} />
+    </div>
+    <div class="f-body" data-reveal style="--delay:120ms">
+      <span class="badge">★ Projet récent</span>
+      <h2>{featured.data.title}</h2>
+      <p class="summary">{featured.data.summary}</p>
+      <div class="content"><Content /></div>
+      <ul class="techs">
+        {featured.data.techs.map((t) => <li class="chip">{t}</li>)}
+      </ul>
+      {
+        featured.data.repo && (
+          <a class="btn btn-primary" href={featured.data.repo} target="_blank" rel="noopener">
+            Voir le code sur GitHub ↗
+          </a>
+        )
+      }
+    </div>
+  </section>
+
+  <div class="grid">
+    {others.map((p, i) => <ProjectCard project={p} delay={(i % 3) * 90} />)}
+  </div>
+</BaseLayout>
+
+<style>
+  .featured {
+    display: grid;
+    grid-template-columns: 1fr 1.1fr;
+    gap: 32px;
+    align-items: center;
+    margin: 48px 0 32px;
+    padding: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .featured::before {
+    content: "";
+    position: absolute;
+    inset: -1px;
+    border-radius: inherit;
+    padding: 1px;
+    background: var(--gradient);
+    mask:
+      linear-gradient(#000 0 0) content-box,
+      linear-gradient(#000 0 0);
+    mask-composite: exclude;
+    pointer-events: none;
+  }
+  .badge {
+    display: inline-block;
+    padding: 4px 12px;
+    border-radius: 999px;
+    background: var(--gradient);
+    color: #fff;
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+  h2 {
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    margin: 14px 0 10px;
+  }
+  .summary {
+    font-size: 1.08rem;
+  }
+  .content {
+    color: var(--muted);
+    font-size: 0.95rem;
+  }
+  .content :global(p) {
+    margin-top: 12px;
+  }
+  .content :global(ul) {
+    margin: 12px 0 0 18px;
+  }
+  .content :global(li) {
+    margin-bottom: 6px;
+  }
+  .content :global(strong) {
+    color: var(--text);
+  }
+  .techs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    list-style: none;
+    margin: 18px 0 22px;
+  }
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+    gap: 20px;
+  }
+  @media (max-width: 860px) {
+    .featured {
+      grid-template-columns: 1fr;
+      padding: 24px 18px;
+    }
+  }
+</style>
