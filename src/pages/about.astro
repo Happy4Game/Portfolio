@@ -1,0 +1,165 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { techLogos } from "../data/techs";
+
+// Mon parcours, étape par étape. `logos` affiche les langages appris.
+const steps = [
+  {
+    when: "À 9 ans",
+    title: "Pourquoi le développement ?",
+    text: "Consulter des pages web ne me suffisait plus : je ressentais le besoin de comprendre leur fonctionnement.",
+  },
+  {
+    when: "Les premières pages",
+    title: "C'est ainsi que je me suis mis aux langages web",
+    text: "Structurer une page, la mettre en forme, la rendre vivante.",
+    logos: ["HTML", "CSS", "JavaScript"],
+  },
+  {
+    when: "Sous le capot",
+    title: "Le visuel, c'est bien, mais comment ça marche dans le fond ?",
+    text: "Toujours dans la démarche de comprendre les applications et sites que je consultais, je voulais ajouter de la « logique » à ce que j'avais créé visuellement. C'est ainsi que je me suis mis aux langages backend.",
+    logos: ["C", "C++", "C#", "Java", "Python"],
+  },
+  {
+    when: "En production, à la maison",
+    title: "Une appli qui parle à une base de données, mais comment l'héberger ?",
+    text: "N'ayant pas la possibilité de souscrire à un VPS, je me suis procuré un Raspberry Pi pour héberger des sites web et des serveurs de jeu. J'ai aujourd'hui un PC fixe qui sert de NAS, de serveur VPN et de serveur de jeu. Je configure tout moi-même.",
+  },
+  {
+    when: "Aujourd'hui",
+    title: "Des applis complètes, de bout en bout",
+    text: "Avec Trainerr, je conçois une application mobile complète en TypeScript et Vue : interface, base SQLite sur le téléphone, tests automatisés et publication Android.",
+  },
+];
+---
+
+<BaseLayout title="À propos">
+  <p class="eyebrow" data-reveal>À propos</p>
+  <h1 class="section-title" data-reveal style="--delay:80ms">
+    Comprendre <span class="gradient-text">comment ça marche</span>
+  </h1>
+  <p class="lead" data-reveal style="--delay:160ms">
+    Mon parcours tient en une question que je me pose depuis l'enfance, et qui
+    m'a mené du navigateur jusqu'au serveur.
+  </p>
+
+  <ol class="timeline">
+    {
+      steps.map((s, i) => (
+        <li class="step" data-reveal style={`--delay:${i * 60}ms`}>
+          <span class="dot" />
+          <div class="glass card">
+            <p class="when">{s.when}</p>
+            <h2>{s.title}</h2>
+            <p>{s.text}</p>
+            {s.logos && (
+              <div class="logos">
+                {s.logos.map((t) => (
+                  <span class="logo" title={t}>
+                    <Image src={techLogos[t]} alt={t} height={40} width={Math.round((40 * techLogos[t].width) / techLogos[t].height)} />
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        </li>
+      ))
+    }
+  </ol>
+</BaseLayout>
+
+<style>
+  .timeline {
+    position: relative;
+    list-style: none;
+    margin-top: 56px;
+    padding-left: 40px;
+  }
+  /* La ligne verticale du parcours, en dégradé */
+  .timeline::before {
+    content: "";
+    position: absolute;
+    left: 11px;
+    top: 8px;
+    bottom: 8px;
+    width: 2px;
+    background: var(--gradient);
+    border-radius: 2px;
+    opacity: 0.6;
+  }
+  .step {
+    position: relative;
+    margin-bottom: 24px;
+  }
+  .dot {
+    position: absolute;
+    left: -36px;
+    top: 28px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 3px solid var(--pink);
+    box-shadow: 0 0 0 6px rgb(255 77 141 / 0.15);
+  }
+  .step.is-visible .dot {
+    animation: pulse 2.4s ease-out 0.4s;
+  }
+  @keyframes pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgb(255 77 141 / 0.6);
+    }
+    100% {
+      box-shadow: 0 0 0 18px rgb(255 77 141 / 0);
+    }
+  }
+  .card {
+    padding: 24px 28px;
+    transition:
+      transform 0.35s ease,
+      border-color 0.35s ease;
+  }
+  .card:hover {
+    transform: translateX(6px);
+    border-color: rgb(139 108 255 / 0.5);
+  }
+  .when {
+    color: var(--orange);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+  }
+  h2 {
+    font-size: 1.4rem;
+    margin: 6px 0 10px;
+  }
+  .card > p:not(.when) {
+    color: var(--muted);
+  }
+  .logos {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 16px;
+  }
+  .logo {
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    border-radius: 16px;
+    background: rgb(255 255 255 / 0.06);
+    border: 1px solid var(--border);
+    transition: transform 0.3s cubic-bezier(0.3, 1.6, 0.5, 1);
+  }
+  .logo:hover {
+    transform: translateY(-4px) rotate(-6deg) scale(1.08);
+  }
+  .logo :global(img) {
+    height: 38px;
+    width: auto;
+  }
+</style>

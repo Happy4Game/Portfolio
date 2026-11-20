@@ -1,0 +1,5 @@
+# Dossiers générés par Astro
+dist/
+.astro/
+node_modules/
+.env

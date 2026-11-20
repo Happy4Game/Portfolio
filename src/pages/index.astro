@@ -1,0 +1,311 @@
+---
+import { Image } from "astro:assets";
+import BaseLayout from "../layouts/BaseLayout.astro";
+import TechMarquee from "../components/TechMarquee.astro";
+import PhoneTrio from "../components/PhoneTrio.astro";
+import photo from "../assets/photo-identite.jpg";
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, "");
+const roles = ["applis mobiles", "sites web", "serveurs maison", "jeux"];
+const services = [
+  {
+    n: "01",
+    title: "Applications",
+    text: "Du jeu en Python à l'appli mobile en Vue et Capacitor, je construis des applis utiles et soignées.",
+  },
+  {
+    n: "02",
+    title: "Web",
+    text: "HTML, CSS, JavaScript, TypeScript et maintenant Astro : des sites rapides et agréables à utiliser.",
+  },
+  {
+    n: "03",
+    title: "Serveurs",
+    text: "NAS, VPN, serveurs de jeu, Docker : j'héberge et je configure tout moi-même, sur Raspberry Pi ou PC.",
+  },
+];
+---
+
+<BaseLayout title="Accueil">
+  <section class="hero">
+    <div class="text">
+      <p class="eyebrow" data-reveal>Alternant développeur</p>
+      <h1 data-reveal style="--delay:80ms">
+        Salut, moi c'est<br /><span class="gradient-text">Thibaut.</span>
+      </h1>
+      <p class="tagline" data-reveal style="--delay:160ms">
+        Je crée des
+        <span class="rotator" aria-label={roles.join(", ")}>
+          {roles.map((r) => <span aria-hidden="true">{r}</span>)}
+        </span>
+      </p>
+      <p class="lead" data-reveal style="--delay:240ms">
+        Je propose et développe des sites et des applications dans diverses
+        technologies, en cherchant toujours à comprendre comment ça marche sous le
+        capot.
+      </p>
+      <div class="actions" data-reveal style="--delay:320ms">
+        <a class="btn btn-primary" href={`${base}/projects`}>Voir mes projets →</a>
+        <a class="btn btn-ghost" href="https://github.com/Happy4Game" target="_blank" rel="noopener">GitHub</a>
+        <a class="btn btn-ghost" href="https://www.linkedin.com/in/dufeutrel-thibaut/" target="_blank" rel="noopener">LinkedIn</a>
+      </div>
+    </div>
+
+    <div class="portrait" data-reveal style="--delay:200ms">
+      <div class="ring"></div>
+      <Image src={photo} alt="Photo de Thibaut Dufeutrel" width={340} class="photo" loading="eager" />
+      <span class="float f1 chip">⚡ Astro</span>
+      <span class="float f2 chip">📱 Vue + Capacitor</span>
+      <span class="float f3 chip">🐳 Docker</span>
+    </div>
+  </section>
+
+  <section class="marquee-wrap" data-reveal>
+    <TechMarquee />
+  </section>
+
+  <section class="services">
+    {
+      services.map((s, i) => (
+        <article class="service glass" data-reveal style={`--delay:${i * 100}ms`}>
+          <span class="n gradient-text">{s.n}</span>
+          <h3>{s.title}</h3>
+          <p>{s.text}</p>
+        </article>
+      ))
+    }
+  </section>
+
+  <section class="featured glass">
+    <div class="f-text">
+      <p class="eyebrow" data-reveal>Projet phare</p>
+      <h2 class="section-title" data-reveal style="--delay:80ms">Trainerr</h2>
+      <p class="lead" data-reveal style="--delay:160ms">
+        Un coach de muscu de poche : l'appli dit quelle séance faire, quelle
+        charge mettre sur chaque machine, et ajuste la suite à chaque série. Tout
+        reste sur le téléphone.
+      </p>
+      <ul class="chips" data-reveal style="--delay:240ms">
+        {["TypeScript", "Vue", "Ionic", "Capacitor", "SQLite"].map((t) => <li class="chip">{t}</li>)}
+      </ul>
+      <a class="btn btn-primary" href={`${base}/projects#trainerr`} data-reveal style="--delay:320ms">Découvrir le projet →</a>
+    </div>
+    <div data-reveal style="--delay:150ms">
+      <PhoneTrio size={190} />
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    align-items: center;
+    gap: 48px;
+    min-height: calc(100vh - 200px);
+  }
+  h1 {
+    font-size: clamp(2.8rem, 7vw, 5rem);
+    margin: 16px 0 12px;
+  }
+  .tagline {
+    font-family: var(--font-display);
+    font-size: clamp(1.3rem, 3vw, 1.8rem);
+    font-weight: 500;
+    margin-bottom: 18px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35em;
+  }
+  /* Mots qui défilent verticalement les uns après les autres */
+  .rotator {
+    display: inline-grid;
+    height: 1.3em;
+    overflow: hidden;
+    color: var(--orange);
+  }
+  .rotator span {
+    grid-area: 1 / 1;
+    line-height: 1.3em;
+    animation: rotate-word 10s infinite;
+    opacity: 0;
+  }
+  .rotator span:nth-child(2) {
+    animation-delay: 2.5s;
+  }
+  .rotator span:nth-child(3) {
+    animation-delay: 5s;
+  }
+  .rotator span:nth-child(4) {
+    animation-delay: 7.5s;
+  }
+  @keyframes rotate-word {
+    0% {
+      opacity: 0;
+      transform: translateY(100%);
+    }
+    5%,
+    22% {
+      opacity: 1;
+      transform: none;
+    }
+    27%,
+    100% {
+      opacity: 0;
+      transform: translateY(-100%);
+    }
+  }
+  .actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 28px;
+  }
+
+  .portrait {
+    position: relative;
+    justify-self: center;
+    width: min(340px, 80vw);
+  }
+  .ring {
+    position: absolute;
+    inset: -10px;
+    border-radius: 44px;
+    background: conic-gradient(from var(--angle), var(--orange), var(--pink), var(--violet), var(--orange));
+    filter: blur(2px);
+    animation: spin 6s linear infinite;
+  }
+  .ring::after {
+    content: "";
+    position: absolute;
+    inset: -20px;
+    border-radius: inherit;
+    background: inherit;
+    filter: blur(40px);
+    opacity: 0.45;
+    z-index: -1;
+  }
+  .portrait :global(.photo) {
+    position: relative;
+    border-radius: 36px;
+    width: 100%;
+    border: 6px solid var(--bg);
+  }
+  /* @property permet d'animer l'angle du dégradé conique */
+  @property --angle {
+    syntax: "<angle>";
+    initial-value: 0deg;
+    inherits: false;
+  }
+  @keyframes spin {
+    to {
+      --angle: 360deg;
+    }
+  }
+  .float {
+    position: absolute;
+    background: rgb(20 20 28 / 0.85);
+    backdrop-filter: blur(8px);
+    box-shadow: 0 10px 30px rgb(0 0 0 / 0.4);
+    padding: 8px 14px;
+    font-weight: 600;
+    animation: bob 5s ease-in-out infinite;
+  }
+  .f1 {
+    top: 8%;
+    left: -18%;
+  }
+  .f2 {
+    top: 48%;
+    right: -22%;
+    animation-delay: -1.6s;
+  }
+  .f3 {
+    bottom: 6%;
+    left: -10%;
+    animation-delay: -3.2s;
+  }
+  @keyframes bob {
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  .marquee-wrap {
+    margin: 40px 0 72px;
+  }
+
+  .services {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-bottom: 72px;
+  }
+  .service {
+    padding: 28px;
+    transition:
+      transform 0.35s ease,
+      border-color 0.35s ease,
+      background 0.35s ease;
+  }
+  .service:hover {
+    transform: translateY(-6px);
+    border-color: rgb(255 122 61 / 0.5);
+    background: var(--surface-hover);
+  }
+  .n {
+    font-family: var(--font-display);
+    font-size: 2.4rem;
+    font-weight: 700;
+  }
+  .service h3 {
+    font-size: 1.35rem;
+    margin: 8px 0 8px;
+  }
+  .service p {
+    color: var(--muted);
+  }
+
+  .featured {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 24px;
+    padding: 48px;
+    overflow: hidden;
+  }
+  .chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    list-style: none;
+    margin: 20px 0 28px;
+  }
+
+  @media (max-width: 860px) {
+    .hero,
+    .featured {
+      grid-template-columns: 1fr;
+    }
+    .hero {
+      min-height: 0;
+      gap: 56px;
+    }
+    .portrait {
+      order: -1;
+      width: min(260px, 70vw);
+    }
+    .f1 {
+      left: -14%;
+    }
+    .f2 {
+      right: -14%;
+    }
+    .services {
+      grid-template-columns: 1fr;
+    }
+    .featured {
+      padding: 28px 20px;
+    }
+  }
+</style>
